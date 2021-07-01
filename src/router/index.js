@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "../view/login/index2";
+import Login from "../view/login/index";
 import Layout from "../view/layout/index";
 import { createMenus, createDefaultVisitedBar, listToTree } from "@/utils/app";
 import { SYSTEM_CONFIG } from "@/config";
@@ -173,8 +173,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log(to.path);
   if (to.path === "/login") {
     next();
+    return
   }
   if (
     store.state.user.token ||
@@ -183,12 +185,13 @@ router.beforeEach((to, from, next) => {
     if (store.state.user.token && !store.state.user.userOnlineInfo) {
       store
         .dispatch("user/getCurrent")
-        .then(() => {
+        .then(() => {          
           addRouters();
-          next({ ...to, replace: true });
+          router.replace({ ...to});
         })
         .catch(() => {
-          router.replace("/login");
+          if(to.path!='/login')
+            router.replace("/login");
         });
     } else {
       //   addRouters();
@@ -204,14 +207,14 @@ const addRouters = () => {
   const menus = store.state.user.userOnlineInfo.menus;
   let menuTree = [];
   listToTree(menus, menuTree, undefined);
-
-  const routers = menus
+  
+  menus
     .filter((menu) => menu.path)
     .map((menu) => {
       const parent = menus.filter(
         (menuItem) => menuItem.resourceId === menu.parentId
       )[0];
-      return {
+      router.addRoute({
         path: "/",
         component: Layout,
         children: [
@@ -229,10 +232,9 @@ const addRouters = () => {
             },
           },
         ],
-      };
+      });
     });
-
-  router.addRoutes(routers);
+  
 
   if (menuTree.length === 0) {
     menuTree = menus;

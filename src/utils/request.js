@@ -2,6 +2,8 @@ import axios from 'axios'
 import store from "../store";
 import {API_BASE_PATH} from "@/config";
 import qs from 'qs';
+import APP from '@/main'
+
 
 axios.defaults.withCredentials = true;
 const request = axios.create({
@@ -40,8 +42,9 @@ request.interceptors.response.use(function (res) {
         return Promise.reject(res.data)
     }
     return res.data.data
-}, function (err) {
-    return Promise.reject(err)
+}, function (err) {console.log(err.response);
+    if(err.response.status==401){APP.$toast.error('异常：凭证无效或已过期，请重新登陆！');APP.$router.push('/login');}
+    else{APP.$toast.error('异常：'+(err.response.data?err.response.data.message:err.response.statusText));}
 });
 
 export default request;

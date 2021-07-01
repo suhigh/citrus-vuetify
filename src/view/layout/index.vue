@@ -103,7 +103,7 @@
     },
     data: () => ({
       config,
-      enableMini: true,
+      enableMini: false,
       enableSearch: false,
       actions: [
         {
@@ -156,14 +156,15 @@
       },
     },
     methods: {
-      doAction(operation) {
-        if (operation.method) {
+      doAction(operation) {        
+        if (operation.method) {          
           this[operation.action]();
         } else {
           this.$router.push(operation.action);
         }
       },
       logout() {
+        this.$store.dispatch("visited/removeAll");
         this.$store
           .dispatch("user/logout")
           .then(() => {
