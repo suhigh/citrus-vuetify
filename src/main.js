@@ -13,7 +13,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 Vue.use(Toast, {
   newestOnTop: true,
-  timeout: 4495,
+  timeout: 1495,
   hideProgressBar: false,
 });
 
