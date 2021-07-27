@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve-demo": "VUE_APP_DEMO=true vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-demo": "VUE_APP_DEMO=true vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -28,7 +30,7 @@
     "vue-toastification": "^1.7.8",
     "vue-upload-component": "^2.8.20",
     "vuelidate": "^0.7.5",
-    "vuetify": "^2.5.3",
+    "vuetify": "^2.5.5",
     "vuetify-loader": "^1.4.3",
     "vuetify-toast-snackbar": "^0.6.1",
     "vuex": "^3.1.3"
